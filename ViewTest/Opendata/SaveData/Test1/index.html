@@ -62,7 +62,7 @@
         <a-assets>
             <a-asset-item
                 id="animated-asset"
-                src="assets/marker/BlueCube.glb"
+                src="assets/marker/.glb"
             ></a-asset-item>
         </a-assets>
 
@@ -79,6 +79,7 @@
             <a-entity
                 id="model"
                 scale="1 1 1"
+                rotation="0 0 0"
                 gltf-model="#animated-asset"
                 class="clickable"
                 gesture-handler
@@ -89,9 +90,10 @@
         <a-entity camera></a-entity>
     </a-scene>
 
-    <!-- Controls for adjusting position of model -->
+    <!-- Controls for adjusting position, scale, and rotation of model -->
     <div style="position: absolute; top: 10px; left: 10px;">
         <h3>Model</h3>
+        <!-- Position Controls -->
         <label for="x">X:</label>
         <button id="x-decrease">&lt;</button>
         <input type="number" id="x" min="-5" max="5" step="0.01" value="0">
@@ -107,25 +109,58 @@
         <input type="number" id="z" min="-5" max="5" step="0.01" value="0">
         <button id="z-increase">&gt;</button>
         <br>
+
+        <!-- Scale Controls -->
         <label for="scale">Scale:</label>
         <input type="range" id="scale-slider" min="0.1" max="3" step="0.01" value="1" class="slider">
+        <br>
+
+        <!-- Rotation Controls -->
+        <h3>Rotation</h3>
+        <label for="rotation-x">X-Y:</label>
+        <input type="range" id="rotation-x" min="0" max="360" step="1" value="0" class="slider">
+        <br>
+        <label for="rotation-y">Y-Z:</label>
+        <input type="range" id="rotation-y" min="0" max="360" step="1" value="0" class="slider">
+        <br>
+        <label for="rotation-z">Z-X:</label>
+        <input type="range" id="rotation-z" min="0" max="360" step="1" value="0" class="slider">
     </div>
 
     <script>
-        // JavaScript to adjust position for model
+        // JavaScript to adjust position, scale, and rotation for model
         const model = document.querySelector('#model');
         const xInput = document.querySelector('#x');
         const yInput = document.querySelector('#y');
         const zInput = document.querySelector('#z');
         const scaleSlider = document.querySelector('#scale-slider');
+        const rotationX = document.querySelector('#rotation-x');
+        const rotationY = document.querySelector('#rotation-y');
+        const rotationZ = document.querySelector('#rotation-z');
 
         function updatePosition() {
             model.setAttribute('position', `${xInput.value} ${yInput.value} ${zInput.value}`);
         }
 
+        function updateScale() {
+            const scaleValue = scaleSlider.value;
+            model.setAttribute('scale', `${scaleValue} ${scaleValue} ${scaleValue}`);
+        }
+
+        function updateRotation() {
+            const rotX = rotationX.value;
+            const rotY = rotationY.value;
+            const rotZ = rotationZ.value;
+            model.setAttribute('rotation', `${rotX} ${rotY} ${rotZ}`);
+        }
+
         xInput.addEventListener('input', updatePosition);
         yInput.addEventListener('input', updatePosition);
         zInput.addEventListener('input', updatePosition);
+        scaleSlider.addEventListener('input', updateScale);
+        rotationX.addEventListener('input', updateRotation);
+        rotationY.addEventListener('input', updateRotation);
+        rotationZ.addEventListener('input', updateRotation);
 
         // Add button click listeners for model position
         document.querySelector('#x-increase').addEventListener('click', () => {
@@ -156,12 +191,6 @@
         document.querySelector('#z-decrease').addEventListener('click', () => {
             zInput.value = parseFloat(zInput.value) - parseFloat(zInput.step);
             updatePosition();
-        });
-
-        // Add event listener for scale adjustment
-        scaleSlider.addEventListener('input', () => {
-            const scaleValue = scaleSlider.value;
-            model.setAttribute('scale', `${scaleValue} ${scaleValue} ${scaleValue}`);
         });
 
         // Fix model position when marker is lost
