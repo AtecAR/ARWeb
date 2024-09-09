@@ -29,6 +29,8 @@
 
         .slider {
             width: 150px;
+            margin-top: 5px;
+            margin-bottom: 10px;
         }
 
         /* ピンク色のスライダー */
@@ -63,6 +65,20 @@
             border-radius: 50%;
             background: #ff69b4; /* 濃いピンク */
             cursor: pointer;
+        }
+
+        /* スライダーとコントロールの配置 */
+        .controls {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 10px;
+            border-radius: 10px;
+        }
+
+        .controls h3 {
+            margin: 5px 0;
         }
     </style>
     <!--Aframe-->
@@ -125,8 +141,8 @@
     </a-scene>
 
     <!-- Controls for adjusting position, scale, and rotation of model -->
-    <div style="position: absolute; top: 10px; left: 10px;">
-        <h3>Model</h3>
+    <div class="controls">
+        <h3>Model Position</h3>
         <!-- Position Controls -->
         <label for="x">X:</label>
         <button id="x-decrease">&lt;</button>
@@ -145,7 +161,7 @@
         <br>
 
         <!-- Scale Controls -->
-        <label for="scale">Scale:</label>
+        <h3>Scale</h3>
         <input type="range" id="scale-slider" min="0.1" max="3" step="0.01" value="1" class="slider">
         <br>
 
